@@ -1,24 +1,62 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { VerticalNav } from 'patternfly-react';
 
 import { Routes } from './Routes'
-import Nav from './components/Nav'
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+
+import '../node_modules/patternfly/dist/css/patternfly.css';
+import '../node_modules/patternfly/dist/css/patternfly-additions.css';
+import '../node_modules/patternfly-react/dist/css/patternfly-react.css';
 import './App.css';
 
 class App extends Component {
+  handleNavClick = navItem => {
+    // This switch seems a lot faster than an href
+    // which looks like it's doing a full page refresh
+    switch (navItem.title) {
+      case 'Home':
+        this.props.history.push('/');
+        break;
+      case 'Route 2':
+        this.props.history.push('/route2');
+        break;
+      case 'Route 3':
+        this.props.history.push('/route3');
+        break;
+      default:
+        console.log('Unrecognized navbar item clicked');
+    }
+  };
+
+
   render() {
     return (
-      <div className="App container">
-        <Header />
-        <Nav />
-        <main className="main-content">
-          <Routes/>
-        </main>
-        <Footer />
+      <div className="App">
+        <VerticalNav>
+          <VerticalNav.Masthead title="Demo App" />
+          <VerticalNav.Item
+            title="Home"
+            iconClass="fa fa-dashboard"
+            onClick={this.handleNavClick}
+            className={null}
+          />
+          <VerticalNav.Item
+            title="Route 2"
+            iconClass="fa fa-sitemap fa-rotate-270"
+            onClick={this.handleNavClick}
+            className={null}
+          />
+          <VerticalNav.Item
+            title="Route 3"
+            iconClass="fa fa-database"
+            onClick={this.handleNavClick}
+            className={null}
+          />
+        </VerticalNav>
+        <Routes/>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
